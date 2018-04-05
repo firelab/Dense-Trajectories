@@ -1,0 +1,12 @@
+Installation notes:
+
+To install on Ubuntu 16.04.4 LTS, I just installed the repository version of ffmpeg and opencv which are the 2
+library requirements mentioned with the Dense Trajectories source code.  Then I realized I also needed to
+install another library, I believe it was libavdevice-dev or libavfilter-dev.  After that, cd to the top
+level directory of the Dense Trajectories source code and run make.  The executable is built in the release
+directory.
+
+Changes to source code:
+I made some changes for our use purposes.  These are detailed in the Git repository.  In general, I added the
+capability to write out a video file with the trajectories.
+

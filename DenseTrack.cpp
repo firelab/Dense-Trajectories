@@ -7,14 +7,18 @@
 
 using namespace cv;
 
-int show_track = 0; // set show_track = 1, if you want to visualize the trajectories
+int show_track = 1; // set show_track = 1, if you want to visualize the trajectories
+int write_video = 1; // set write_video = 1, if you want to write a video file of the trajectories
 
 int main(int argc, char** argv)
 {
 	VideoCapture capture;
-	char* video = argv[1];
+////////////////////////////////////
+	VideoWriter writer;
+////////////////////////////////////
+	//char* video = infile.c_str();
 	int flag = arg_parse(argc, argv);
-	capture.open(video);
+	capture.open(infile);
 
 	if(!capture.isOpened()) {
 		fprintf(stderr, "Could not initialize capturing..\n");
@@ -31,7 +35,7 @@ int main(int argc, char** argv)
 	InitDescInfo(&mbhInfo, 8, false, patch_size, nxy_cell, nt_cell);
 
 	SeqInfo seqInfo;
-	InitSeqInfo(&seqInfo, video);
+	InitSeqInfo(&seqInfo, infile);
 
 	if(flag)
 		seqInfo.length = end_frame - start_frame + 1;
@@ -40,7 +44,17 @@ int main(int argc, char** argv)
 
 	if(show_track == 1)
 		namedWindow("DenseTrack", 0);
-
+////////////////////////////////////
+	if(write_video == 1){
+		writer.open(outfile, 
+               		//capture.get(CV_CAP_PROP_FOURCC),
+   			CV_FOURCC('P','I','M','1'),
+               		capture.get(CV_CAP_PROP_FPS),
+               		Size(capture.get(CV_CAP_PROP_FRAME_WIDTH),
+               		capture.get(CV_CAP_PROP_FRAME_HEIGHT)),
+			true);
+	}
+////////////////////////////////////
 	Mat image, prev_grey, grey;
 
 	std::vector<float> fscales(0);
@@ -229,10 +243,15 @@ int main(int argc, char** argv)
 			c = cvWaitKey(3);
 			if((char)c == 27) break;
 		}
+////////////////////////////////////
+		if(write_video == 1)
+			writer.write(image);
+////////////////////////////////////
 	}
 
 	if( show_track == 1 )
 		destroyWindow("DenseTrack");
+
 
 	return 0;
 }

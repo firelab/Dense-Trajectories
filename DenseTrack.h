@@ -22,6 +22,8 @@ int start_frame = 0;
 int end_frame = INT_MAX;
 int scale_num = 8;
 const float scale_stride = sqrt(2);
+char* infile;
+char* outfile;
 
 // parameters for descriptors
 int patch_size = 32;

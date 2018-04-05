@@ -72,7 +72,7 @@ void InitSeqInfo(SeqInfo* seqInfo, char* video)
 void usage()
 {
 	fprintf(stderr, "Extract dense trajectories from a video\n\n");
-	fprintf(stderr, "Usage: DenseTrack video_file [options]\n");
+	fprintf(stderr, "Usage: DenseTrack input_file output_file [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "  -h                        Display this message and exit\n");
 	fprintf(stderr, "  -S [start frame]          The start frame to compute feature (default: S=0 frame)\n");
@@ -132,7 +132,12 @@ bool arg_parse(int argc, char** argv)
 		fprintf(stderr, "error parsing arguments at -%c\n  Try '%s -h' for help.", c, executable );
 		abort();
 	}
-	return flag;
+	
+	//Get non-option arguments
+	infile = argv[optind];
+	outfile = argv[optind + 1];
+	
+  	return flag;
 }
 
 #endif /*INITIALIZE_H_*/
